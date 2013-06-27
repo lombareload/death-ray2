@@ -17,6 +17,9 @@ import java.security.GeneralSecurityException;
  */
 public class DatastoreManager {
 	
+	/**
+	 * Datastore
+	 */
 	private static Datastore datastore;
 	
 	/**
