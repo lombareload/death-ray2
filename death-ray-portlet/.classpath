@@ -18,9 +18,9 @@
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/michael/Documents/Death_Ray/google-api-services-datastore-protobuf-java-v1beta1-rev1-1.0.0/google-api-services-datastore-protobuf-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="/home/michael/Documents/Death_Ray/google-api-services-datastore-protobuf-java-v1beta1-rev1-1.0.0/google-api-services-datastore-protobuf-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="/home/michael/Documents/Death_Ray/google-api-services-datastore-protobuf-java-v1beta1-rev1-1.0.0/google-api-services-datastore-protobuf-demos-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="/home/michael/Documents/Death_Ray/google-api-services-datastore-protobuf-java-v1beta1-rev1-1.0.0/google-api-services-datastore-protobuf-demos-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib"/>
+	<!--<classpathentry kind="lib" path="docroot/WEB-INF/lib/google-api-services-datastore-protobuf-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/google-api-services-datastore-protobuf-demos-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/google-api-services-datastore-protobuf-demos-all-deps-v1beta1-rev1-1.0.0-SNAPSHOT.jar"/>-->
 	<classpathentry kind="output" path="docroot/WEB-INF/classes"/>
 </classpath>
