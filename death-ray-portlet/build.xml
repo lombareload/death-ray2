@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="death-ray-portlet" basedir="." default="deploy">
+	<import file="../../../liferay-plugins-sdk-6.1.10-ee-ga1-20120217120951450/build-common-portlet.xml" />
+</project>

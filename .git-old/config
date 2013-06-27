@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/lombareload/death-ray.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	push = +HEAD:refs/heads/master
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "newbranch"]
+	remote = .
+	merge = refs/heads/master
