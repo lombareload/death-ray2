@@ -8,6 +8,7 @@ import com.google.api.services.datastore.client.DatastoreHelper;
 import com.google.api.services.datastore.client.DatastoreOptions;
 
 import java.io.IOException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 
 /**
@@ -29,11 +30,13 @@ public class DatastoreManager {
 	 * @throws IOException
 	 */
 	public static Datastore getDatastore() throws GeneralSecurityException, IOException {
-		Credential credential = DatastoreHelper.getServiceAccountCredential(ConfigurationProperties.getInstance().getProperty("DATASTORE_SERVICE_ACCOUNT"), ConfigurationProperties.getInstance().getProperty("DATASTORE_PRIVATE_KEY_FILE"));
+		URL url = DatastoreManager.class.getResource("91d2db795ef973c0096c4aab8678b26a1696400b-privatekey.p12");
+		Credential credential = DatastoreHelper.getServiceAccountCredential(ConfigurationProperties.getInstance().getProperty("DATASTORE_SERVICE_ACCOUNT"), url.getPath());
 		DatastoreOptions.Builder options = new DatastoreOptions.Builder();
 		options.dataset(System.getenv("DATASTORE_DATASET"));
 	    options.host(System.getenv("DATASTORE_HOST"));
 	    options.credential(credential);
+	    
 	    datastore = DatastoreFactory.get().create(options.dataset(ConfigurationProperties.getInstance().getProperty("datasetId")).build());
 	    return datastore;
 	}
