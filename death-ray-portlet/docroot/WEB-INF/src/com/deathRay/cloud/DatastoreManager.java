@@ -31,7 +31,9 @@ public class DatastoreManager {
 	 */
 	public static Datastore getDatastore() throws GeneralSecurityException, IOException {
 		URL url = DatastoreManager.class.getResource("91d2db795ef973c0096c4aab8678b26a1696400b-privatekey.p12");
-		Credential credential = DatastoreHelper.getServiceAccountCredential(ConfigurationProperties.getInstance().getProperty("DATASTORE_SERVICE_ACCOUNT"), url.getPath());
+		String pathToResource = url.getPath().replaceAll("%20", " ");
+		System.out.println("pathToResource = " + pathToResource);
+		Credential credential = DatastoreHelper.getServiceAccountCredential(ConfigurationProperties.getInstance().getProperty("DATASTORE_SERVICE_ACCOUNT"), pathToResource);
 		DatastoreOptions.Builder options = new DatastoreOptions.Builder();
 		options.dataset(System.getenv("DATASTORE_DATASET"));
 	    options.host(System.getenv("DATASTORE_HOST"));
