@@ -2,9 +2,15 @@ package com.deathRay.util;
 
 import com.deathRay.dao.TareaDao;
 import com.google.api.services.datastore.DatastoreV1.Entity;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+
+
+
 
 /**
  * 
@@ -12,8 +18,9 @@ import java.util.Date;
  * @version 20130627
  */
 public class Util {
-
-
+	
+	private static final Log log = LogFactoryUtil.getLog(Util.class);
+	
 	/**
 	 * Método que convierte una fecha en formato Date a 
 	 * formato TimestampMicroseconds que es el que se 
@@ -26,7 +33,7 @@ public class Util {
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			epoch = cal.getTimeInMillis() / 1000;
+			epoch = cal.getTimeInMillis() * 1000;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,24 +48,53 @@ public class Util {
 	 */
 	public Date timestampMicrosecondsToDate(Long epoch) {
 //		String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date (epoch*1000));
-		return new java.util.Date (epoch*1000);
+		return new java.util.Date (epoch/1000);
 		
 	}
 	
 	/**
 	 * Método que obtiene los datos de una entidad Tarea y los inserta en un objeto TareaDao.
+	 * Devuelve null si los objetos almecenados no tienen la estructura de una entidad Tarea.
 	 * @param entity Entida de tipo tarea.
 	 * @return Objeti tipo TareaDao.
 	 */
 	public TareaDao entidadToTareaDao(Entity entity){
+		TareaDao tareaDao;
+		try{
 		Date fecha_inicial = timestampMicrosecondsToDate(entity.getProperty(0).getValue(0).getTimestampMicrosecondsValue());
 		Date fecha_final = timestampMicrosecondsToDate(entity.getProperty(1).getValue(0).getTimestampMicrosecondsValue());
 		Long estado = entity.getProperty(2).getValue(0).getIntegerValue();
 		Long userId = entity.getProperty(3).getValue(0).getIntegerValue();
 		Long groupId = entity.getProperty(4).getValue(0).getIntegerValue();
-		Long taskId = entity.getKey().getPathElement(0).getId();
-		TareaDao tareaDao = new TareaDao(fecha_inicial, fecha_final, estado, userId, groupId, taskId);
+		String descripcion = entity.getProperty(5).getValue(0).getStringValue();
+		String name = entity.getKey().getPathElement(0).getName();
+		tareaDao = new TareaDao(fecha_inicial, fecha_final, estado, userId, groupId, name, descripcion);
+		}
+		catch(IndexOutOfBoundsException e){
+			tareaDao=new TareaDao();
+		}
+		catch(Exception e){
+			log.error("entidadToTareaDao", e);
+			tareaDao=null;
+		}
 		return tareaDao;
-		//entityFound.getProperty(0).getValue(0).getTimestampMicrosecondsValue()
+	}
+	
+	/**
+	 * Método que se usa cuando por se obtienen las propiedades de las entidades por medio de mapas
+	 * ejemplo: Map<String, Object> props = DatastoreHelper.getPropertyMap(entityResult.getEntity());
+	 * @param props mapa de propiedades de la entidad
+	 * @return TareaDao sin el name
+	 */
+	public TareaDao mapToTareaDao(Map<String, Object> props){
+		Date fecha_inicial = (Date) props.get("fecha_inicio");
+		Date fecha_final = (Date) props.get("fecha_fin");
+		Long estado = (Long) props.get("estado");
+		Long usuario = (Long) props.get("usuario");
+		Long proyecto = (Long) props.get("proyecto");
+		String descripcion = (String) props.get("descripcion");
+		//System.out.println("props: "+props.toString());
+		TareaDao tareaDao = new TareaDao(fecha_inicial, fecha_final, estado, usuario, proyecto, "", descripcion);
+		return tareaDao;		
 	}
 }

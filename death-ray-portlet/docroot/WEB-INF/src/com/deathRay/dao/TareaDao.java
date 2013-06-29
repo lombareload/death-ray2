@@ -14,17 +14,30 @@ public class TareaDao {
 	private Long estado;
 	private Long userId;
 	private Long groupId;
-	private Long taskId;
-			
+	private String name;
+	private String descripcion;
+	
+	public TareaDao() {
+		super();
+		this.fecha_inicial = new Date();
+		this.fecha_final = new Date();
+		this.estado = -1L;
+		this.userId = -1L;
+		this.groupId = -1L;
+		this.name = "";
+		this.descripcion = "";
+	}
+	
 	public TareaDao(Date fecha_inicial, Date fecha_final, Long estado,
-			Long userId, Long groupId, Long taskId) {
+			Long userId, Long groupId, String name, String descripcion) {
 		super();
 		this.fecha_inicial = fecha_inicial;
 		this.fecha_final = fecha_final;
 		this.estado = estado;
 		this.userId = userId;
 		this.groupId = groupId;
-		this.taskId = taskId;
+		this.name = name;
+		this.descripcion = descripcion;
 	}
 	
 	public Date getFecha_inicial() {
@@ -57,11 +70,29 @@ public class TareaDao {
 	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
-	public Long getTaskId() {
-		return taskId;
-	}
-	public void setTaskId(Long taskId) {
-		this.taskId = taskId;
-	}	
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	@Override
+	public String toString() {
+		return "TareaDao [fecha_inicial=" + fecha_inicial + ", fecha_final="
+				+ fecha_final + ", estado=" + estado + ", userId=" + userId
+				+ ", groupId=" + groupId + ", name=" + name + ", descripcion="
+				+ descripcion + "]";
+	}
+	
 }
