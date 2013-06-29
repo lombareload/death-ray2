@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@page import="com.liferay.portal.kernel.util.WebKeys"%>
+<%@page import="com.liferay.portal.theme.ThemeDisplay"%>
+<%@page import="com.liferay.portal.model.User"%>
+
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
+<%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
+<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+
+<%@page import="com.liferay.portal.kernel.log.Log"%>
+<%@page import="com.liferay.portal.kernel.log.LogFactoryUtil"%>
+
+<%@page import="java.util.*"%>
+<%@page import="com.deathRay.util.*"%>
+<%@page import="java.util.LinkedList"%>
+
+<%@page import="com.liferay.portal.kernel.util.ListUtil"%>
+
+<portlet:defineObjects />
+<liferay-theme:defineObjects />
+
+<% 
+User thisUser = themeDisplay.getUser();
+Log log = LogFactoryUtil.getLog("view.jsp");
+Util util = new Util();
+%>

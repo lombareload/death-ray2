@@ -23,9 +23,15 @@ public class Test {
 		try {
 			// Crea o actualiza una tarea:
 			tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
-					99L, 3L, "tarea5", "Arreglar Portlet");
+					10723L, 10719L, "tarea1", "Arreglar Portlet");
 			System.out.println("Tarea Creada : " + tareaDao.toString());
-
+			tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
+					10723L, 10719L, "tarea3", "Arreglar Portlet");
+			System.out.println("Tarea Creada : " + tareaDao.toString());tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
+					10723L, 10719L, "tarea4", "Arreglar Portlet");
+			System.out.println("Tarea Creada : " + tareaDao.toString());tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
+					10723L, 10719L, "tarea5", "Arreglar Portlet");
+			System.out.println("Tarea Creada : " + tareaDao.toString());
 			
 			System.out.println("Todas las tareas:");
 			List<EntityResult> results = tarea.findAllTask();
@@ -38,7 +44,7 @@ public class Test {
 			}
 
 			System.out.println("Tareas por proyecto:");
-			List<EntityResult> resultsByProject = tarea.findAllTaskByProyecto(3L);
+			List<EntityResult> resultsByProject = tarea.findAllTaskByProyecto(10719L);
 			for (EntityResult entityResult : resultsByProject) {
 				entity = entityResult.getEntity();
 				foundTareaDao = util.entidadToTareaDao(entity);

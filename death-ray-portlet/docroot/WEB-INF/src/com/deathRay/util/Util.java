@@ -7,7 +7,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 
 
@@ -96,5 +98,30 @@ public class Util {
 		//System.out.println("props: "+props.toString());
 		TareaDao tareaDao = new TareaDao(fecha_inicial, fecha_final, estado, usuario, proyecto, "", descripcion);
 		return tareaDao;		
+	}
+	
+	public HashMap<Long, String> getEstados(){
+		HashMap<Long, String> hashEstados = new HashMap<Long, String>();
+		String estados = ConfigurationProperties.getInstance().getProperty("Estado");
+		StringTokenizer stringTokeneizer = new StringTokenizer(estados,","); 
+		while(stringTokeneizer.hasMoreTokens()){
+			String token = stringTokeneizer.nextToken();
+			StringTokenizer t = new StringTokenizer(token,":");
+			long idEstado;
+			while(t.hasMoreTokens()){
+				try{
+					idEstado = Long.parseLong(t.nextToken());
+					hashEstados.put(idEstado, t.nextToken());
+					log.info(idEstado);
+					log.info(hashEstados.get(idEstado));
+				}
+				catch(NumberFormatException e){
+					log.error(e);
+				}
+				
+			}
+        }
+		
+		return hashEstados;
 	}
 }

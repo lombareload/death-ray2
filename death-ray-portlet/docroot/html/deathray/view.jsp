@@ -14,8 +14,36 @@
 */
 --%>
 
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<portlet:defineObjects />
+<%@page import="com.liferay.portal.model.Role"%>
+<%@page import="com.liferay.portal.util.PortalUtil"%>
 
+
+
+<%@include  file="init.jsp" %>
+
+<%
+	
+	List<Role> roles = thisUser.getRoles();
+	
+	String rol_Supervisor = ConfigurationProperties.getInstance()
+			.getProperty("Rol_Supervisor");
+	boolean isSupervisor = false;
+	for (Role rol : roles) {
+		if (rol.getName().equalsIgnoreCase(rol_Supervisor.toUpperCase())) {
+			isSupervisor = true;
+			break;
+		}
+	}	
+	log.info("isSupervisor: "+isSupervisor);
+%>
+<%
+if(isSupervisor){
+%>
+<jsp:include page="/html/deathray/supervisor.jsp" />
+<%
+}
+%>
 This is the <b>DeathRay</b> portlet in View mode.
+
+
