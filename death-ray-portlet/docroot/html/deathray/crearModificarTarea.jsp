@@ -11,8 +11,10 @@
 
 <%
 	Long groupId = (Long) request.getAttribute("group_id");
+	String error = (String)request.getAttribute("error");
 	groupId = (groupId == null ? 0 : groupId);
 	String keyName = (String) request.getAttribute("keyName");
+	String action = (String) request.getAttribute("action");
 	keyName = (keyName == null ? "" : keyName);
 
 	List<User> users = UserLocalServiceUtil.getUserGroupUsers(groupId);
@@ -51,12 +53,19 @@
 </head>
 <body>
 
+	<%
+            if (error!=null&&!error.isEmpty()) {
+        %>
+	<div class="portlet-msg-error" id="errorMessage">  
+	<%=error%>          
+            </div>
+	<%} %>
+
 	<form id="<portlet:namespace />editorTareaForm" name="editorTareaForm"
 		action="<portlet:actionURL /> " method="post" class="editorTareaForm">
 
 		<input type="hidden" name="group_id" value="<%=groupId%>" /> <input
-			type="hidden" name="keyName" value="<%=keyName%>" /> <input
-			type="hidden" name="action" value="saveTask" /> <input type="hidden"
+			type="hidden" name="action" value="<%=action.equals("newTask")?"saveTask":"saveEditedTask"%>" /> <input type="hidden"
 			name="isSupervisor" value="<%=isSupervisor%>" />
 
 		<aui:layout>
@@ -86,7 +95,9 @@
 							<span>Nombre tarea:</span>
 						</aui:column>
 						<aui:column columnWidth="50">
-							<span><%=keyName%></span>
+							<span><%=keyName%> <input
+								type="<%=action.equals("newTask")?"text":"hidden"%>"
+								name="keyName" value="<%=keyName%>" /> </span>
 						</aui:column>
 					</aui:layout>
 
@@ -98,15 +109,19 @@
 							<%
 								if (isSupervisor) {
 							%>
-							<input type="text" value="<%=tareaDao.getDescripcion()%>"></input>
+							<input id="descripcion" name="descripcion" type="text"
+								value="<%=tareaDao.getDescripcion()%>"></input>
 							<%
 								} else {
 							%>
 							<span> "<%=tareaDao.getDescripcion()%>"
 							</span>
+							<input type="hidden" id="descripcion" name="descripcion"
+								value="<%=tareaDao.getDescripcion()%>" />
 							<%
 								}
 							%>
+
 						</aui:column>
 					</aui:layout>
 
@@ -115,9 +130,8 @@
 							<span>Fecha de Inicio:</span>
 						</aui:column>
 						<aui:column columnWidth="50">
-							<input type="text"
-								value="<%=dateFormat.format(tareaDao
-										.getFecha_inicial())%>"></input>
+							<input id="fechaInicio" name="fechaInicio" type="text"
+								value="<%=tareaDao.getFecha_inicial()%>" />
 						</aui:column>
 					</aui:layout>
 
@@ -129,14 +143,15 @@
 							<%
 								if (!isSupervisor) {
 							%>
-							<input type="text"
-								value="<%=dateFormat.format(tareaDao
-											.getFecha_final())%>"></input>
+							<input id="fechaTerminacion" name="fechaTerminacion" type="text"
+								value="<%=tareaDao.getFecha_final()%>"></input>
 							<%
 								} else {
 							%>
-							<%=dateFormat.format(tareaDao
-											.getFecha_final())%>
+							<%=tareaDao.getFecha_final()%>
+							<input type="hidden" id="fechaTerminacion"
+								name="fechaTerminacion"
+								value="<%=tareaDao.getFecha_final()%>" />
 							<%
 								}
 							%>
@@ -153,8 +168,8 @@
 							<%
 								if (isSupervisor) {
 							%>
-							<select>
-								<option var="">Seleccione...</option>
+							<select id="userId" name="userId">
+								<option value="-1">Seleccione...</option>
 								<%
 									Iterator it = nombres_usuarios.entrySet()
 																	.iterator();
@@ -170,11 +185,11 @@
 																		.equals(tareaDao.getUserId()
 																				.toString())) {
 								%>
-								<option var="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
+								<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
 								<%
 									} else {
 								%>
-								<option var="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
+								<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
 								<%
 									}
 								%>
@@ -188,6 +203,8 @@
 							%>
 							<span><%=nombres_usuarios.get(tareaDao
 											.getUserId())%></span>
+							<input type="hidden" id="userId" name="userId"
+								value="<%=tareaDao.getUserId()%>" />
 							<%
 								}
 							%>
@@ -200,8 +217,8 @@
 							<span>Estado:</span>
 						</aui:column>
 						<aui:column columnWidth="50">
-							<select>
-								<option var="">Seleccione...</option>
+							<select id="estadoId" name="estadoId">
+								<option value="-1">Seleccione...</option>
 								<%
 									Iterator it = estados.entrySet().iterator();
 														while (it.hasNext()) {
@@ -216,11 +233,11 @@
 																	.equals(tareaDao.getEstado()
 																			.toString())) {
 								%>
-								<option var="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
+								<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
 								<%
 									} else {
 								%>
-								<option var="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
+								<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
 								<%
 									}
 								%>
@@ -237,8 +254,16 @@
 		</aui:layout>
 		<aui:button-row>
 			<aui:button name="saveButton" type="submit" value="save" />
-			<aui:button name="cancelButton" type="button" value="cancel" />
+			<aui:button name="cancelButton" type="button" value="cancel"
+				onClick="cancelFunction()" />
 		</aui:button-row>
+
+		<script type="text/javascript">
+			function cancelFunction() {
+				document.editorTareaForm.action.value = "cancelSaveTask";
+				document.editorTareaForm.submit();
+			}
+		</script>
 
 	</form>
 

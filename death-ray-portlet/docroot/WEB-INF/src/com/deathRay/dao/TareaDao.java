@@ -9,8 +9,8 @@ import java.util.Date;
  */
 public class TareaDao {
 	
-	private Date fecha_inicial;
-	private Date fecha_final;
+	private String fecha_inicial;
+	private String fecha_final;
 	private Long estado;
 	private Long userId;
 	private Long groupId;
@@ -19,8 +19,8 @@ public class TareaDao {
 	
 	public TareaDao() {
 		super();
-		this.fecha_inicial = new Date();
-		this.fecha_final = new Date();
+		this.fecha_inicial = "";
+		this.fecha_final = "";
 		this.estado = -1L;
 		this.userId = -1L;
 		this.groupId = -1L;
@@ -28,7 +28,7 @@ public class TareaDao {
 		this.descripcion = "";
 	}
 	
-	public TareaDao(Date fecha_inicial, Date fecha_final, Long estado,
+	public TareaDao(String fecha_inicial, String fecha_final, Long estado,
 			Long userId, Long groupId, String name, String descripcion) {
 		super();
 		this.fecha_inicial = fecha_inicial;
@@ -40,16 +40,16 @@ public class TareaDao {
 		this.descripcion = descripcion;
 	}
 	
-	public Date getFecha_inicial() {
+	public String getFecha_inicial() {
 		return fecha_inicial;
 	}
-	public void setFecha_inicial(Date fecha_inicial) {
+	public void setFecha_inicial(String fecha_inicial) {
 		this.fecha_inicial = fecha_inicial;
 	}
-	public Date getFecha_final() {
+	public String getFecha_final() {
 		return fecha_final;
 	}
-	public void setFecha_final(Date fecha_final) {
+	public void setFecha_final(String fecha_final) {
 		this.fecha_final = fecha_final;
 	}
 	public Long getEstado() {

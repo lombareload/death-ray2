@@ -5,6 +5,7 @@ import com.google.api.services.datastore.DatastoreV1.Entity;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class Util {
 
 	private static final Log log = LogFactoryUtil.getLog(Util.class);
 	private HashMap<Long, String> hashEstados = null;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public static Util getInstance() {
         return UtilHolder.INSTANCE;
@@ -61,11 +63,11 @@ public class Util {
 	 *            fecha en formato TimestampMicroseconds
 	 * @return
 	 */
-	public Date timestampMicrosecondsToDate(Long epoch) {
+	public String timestampMicrosecondsToDate(Long epoch) {
 		// String date = new
 		// java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new
 		// java.util.Date (epoch*1000));
-		return new java.util.Date(epoch / 1000);
+		return epoch==0L?"": dateFormat.format( new java.util.Date(epoch / 1000));
 
 	}
 
@@ -81,9 +83,9 @@ public class Util {
 	public TareaDao entidadToTareaDao(Entity entity) {
 		TareaDao tareaDao;
 		try {
-			Date fecha_inicial = timestampMicrosecondsToDate(entity
+			String fecha_inicial = timestampMicrosecondsToDate(entity
 					.getProperty(0).getValue(0).getTimestampMicrosecondsValue());
-			Date fecha_final = timestampMicrosecondsToDate(entity
+			String fecha_final = timestampMicrosecondsToDate(entity
 					.getProperty(1).getValue(0).getTimestampMicrosecondsValue());
 			Long estado = entity.getProperty(2).getValue(0).getIntegerValue();
 			Long userId = entity.getProperty(3).getValue(0).getIntegerValue();
@@ -96,31 +98,8 @@ public class Util {
 		} catch (IndexOutOfBoundsException e) {
 			tareaDao = new TareaDao();
 		} catch (Exception e) {
-			log.error("entidadToTareaDao", e);
-			tareaDao = null;
+			tareaDao =  new TareaDao();
 		}
-		return tareaDao;
-	}
-
-	/**
-	 * Método que se usa cuando por se obtienen las propiedades de las entidades
-	 * por medio de mapas ejemplo: Map<String, Object> props =
-	 * DatastoreHelper.getPropertyMap(entityResult.getEntity());
-	 * 
-	 * @param props
-	 *            mapa de propiedades de la entidad
-	 * @return TareaDao sin el name
-	 */
-	public TareaDao mapToTareaDao(Map<String, Object> props) {
-		Date fecha_inicial = (Date) props.get("fecha_inicio");
-		Date fecha_final = (Date) props.get("fecha_fin");
-		Long estado = (Long) props.get("estado");
-		Long usuario = (Long) props.get("usuario");
-		Long proyecto = (Long) props.get("proyecto");
-		String descripcion = (String) props.get("descripcion");
-		// System.out.println("props: "+props.toString());
-		TareaDao tareaDao = new TareaDao(fecha_inicial, fecha_final, estado,
-				usuario, proyecto, "", descripcion);
 		return tareaDao;
 	}
 
@@ -139,12 +118,11 @@ public class Util {
 				String token = stringTokeneizer.nextToken();
 				StringTokenizer t = new StringTokenizer(token, ":");
 				long idEstado;
+				hashEstados.put(-1L,"");
 				while (t.hasMoreTokens()) {
 					try {
 						idEstado = Long.parseLong(t.nextToken());
 						hashEstados.put(idEstado, t.nextToken());
-						log.info(idEstado);
-						log.info(hashEstados.get(idEstado));
 					} catch (NumberFormatException e) {
 						log.error(e);
 					}
