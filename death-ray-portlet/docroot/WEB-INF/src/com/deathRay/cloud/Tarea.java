@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class Tarea {
 
-	private static Util util = new Util();
+	private static Util util = Util.getInstance();
 	private static Datastore datastore;
 	private static final Log log = LogFactoryUtil.getLog(Util.class);
-	
+
 	public Tarea() {
 		try {
 			datastore = DatastoreManager.getDatastore();
@@ -156,8 +156,10 @@ public class Tarea {
 
 		queryBuilder.setFilter(projectFilter);
 
-		/*queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
-				PropertyOrder.Direction.DESCENDING));*/
+		/*
+		 * queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
+		 * PropertyOrder.Direction.DESCENDING));
+		 */
 
 		RunQueryRequest request = RunQueryRequest.newBuilder()
 				.setQuery(queryBuilder).build();
@@ -197,8 +199,10 @@ public class Tarea {
 
 		queryBuilder.setFilter(projectFilter);
 
-		/*queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
-				PropertyOrder.Direction.DESCENDING));*/
+		/*
+		 * queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
+		 * PropertyOrder.Direction.DESCENDING));
+		 */
 
 		RunQueryRequest request = RunQueryRequest.newBuilder()
 				.setQuery(queryBuilder).build();
@@ -238,8 +242,10 @@ public class Tarea {
 
 		queryBuilder.setFilter(projectFilter);
 
-		/*queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
-				PropertyOrder.Direction.DESCENDING));*/
+		/*
+		 * queryBuilder.addOrder(DatastoreHelper.makeOrder("fecha_inicio",
+		 * PropertyOrder.Direction.DESCENDING));
+		 */
 
 		RunQueryRequest request = RunQueryRequest.newBuilder()
 				.setQuery(queryBuilder).build();
@@ -254,5 +260,19 @@ public class Tarea {
 		}
 
 		return results;
+	}
+
+	public TareaDao findTaskByName(String nombre) throws DatastoreException {
+
+		Key.Builder key = Key.newBuilder().addPathElement(
+				Key.PathElement.newBuilder().setKind("Tarea").setName(nombre));
+
+		LookupRequest.Builder lreq = LookupRequest.newBuilder();
+		lreq.addKey(key);
+
+		LookupResponse lresp = datastore.lookup(lreq.build());
+		Entity entityFound = lresp.getFound(0).getEntity();
+
+		return util.entidadToTareaDao(entityFound);
 	}
 }

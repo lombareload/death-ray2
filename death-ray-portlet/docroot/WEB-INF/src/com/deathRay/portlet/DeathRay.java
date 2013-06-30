@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 public class DeathRay extends MVCPortlet {
 
 	private static final Log log = LogFactoryUtil.getLog(Util.class);
-	private String page="/html/deathray/view.jsp";
-	private String home="/html/deathray/view.jsp";
+	private String page = "/html/deathray/view.jsp";
+	private static final String home = "/html/deathray/view.jsp";
 
 	@Override
 	public void processAction(ActionRequest request, ActionResponse response)
@@ -30,29 +30,64 @@ public class DeathRay extends MVCPortlet {
 
 		log.info("Entra a processAction");
 		String action = ParamUtil.getString(request, "action", "");
-		Long group_id=0L;
-		
+		Long group_id = 0L;
+		String keyName = "";
+
 		if (request.getParameter("action") != null) {
-			
 
 			if (action.equals("edit_tasks")) {
 				log.info("edit_tasks");
 
 				try {
 					group_id = Long.valueOf(request.getParameter("group_id"));
+					page = "/html/deathray/editorTareas.jsp";
 				} catch (Exception ex) {
 					log.debug("Error in Long.valueOf "
 							+ request.getParameter("group_id"));
 				}
-				page="/html/deathray/editorTareas.jsp";
 
-				
+			} else if (action.equals("edit_task")) {
 
-			} else {
+				try {
+					group_id = Long.valueOf(request.getParameter("group_id"));
+					keyName = String.valueOf(request.getParameter("keyName"));
+					page = "/html/deathray/crearModificarTarea.jsp";
+				} catch (Exception ex) {
+					log.debug("Error in Long.valueOf "
+							+ request.getParameter("group_id"));
+				}
+
+			} else if (action.equals("saveTask") || action.equals("cancelSaveTask")) {
+
+				boolean isSupervisor = Boolean.valueOf(request
+						.getParameter("isSupervisor"));
+
+				if (isSupervisor) {
+					page = "/html/deathray/editorTareas.jsp";
+				} else {
+					page = home;
+				}
+
+				if (action.equals("saveTask")) {
+
+					try {
+						group_id = Long.valueOf(request
+								.getParameter("group_id"));
+						keyName = String.valueOf(request
+								.getParameter("keyName"));
+
+					} catch (Exception ex) {
+						log.debug("Error in Long.valueOf "
+								+ request.getParameter("group_id"));
+					}
+
+				}
+
 			}
-			
+
 		}
 		request.setAttribute("group_id", group_id);
+		request.setAttribute("keyName", keyName);
 		response.setPortletMode(PortletMode.VIEW);
 	}
 
@@ -60,11 +95,11 @@ public class DeathRay extends MVCPortlet {
 	public void doView(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
 		log.info("Entra a doView");
-		log.info("page: "+page);
+		log.info("page: " + page);
 		response.setContentType("text/html");
 		PortletRequestDispatcher dispatcher = getPortletContext()
 				.getRequestDispatcher(page);
-		page=home;
+		page = home;
 		dispatcher.include(request, response);
 	}
 

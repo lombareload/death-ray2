@@ -19,7 +19,7 @@ public class Test {
 		// TODO Auto-generated method stub
 		Tarea tarea = new Tarea();
 		TareaDao tareaDao;
-		Util util = new Util();
+		Util util = Util.getInstance();
 		try {
 			// Crea o actualiza una tarea:
 			tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,

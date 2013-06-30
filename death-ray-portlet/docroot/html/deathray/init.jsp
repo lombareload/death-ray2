@@ -4,6 +4,7 @@
 <%@page import="com.liferay.portal.kernel.util.WebKeys"%>
 <%@page import="com.liferay.portal.theme.ThemeDisplay"%>
 <%@page import="com.liferay.portal.model.User"%>
+<%@page import="com.liferay.portal.model.UserGroup"%>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet"%>
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
@@ -21,6 +22,7 @@
 <%@page import="java.util.LinkedList"%>
 
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
+<%@page import="java.text.SimpleDateFormat"%>
 
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
@@ -28,5 +30,6 @@
 <% 
 User thisUser = themeDisplay.getUser();
 Log log = LogFactoryUtil.getLog("view.jsp");
-Util util = new Util();
+Util util = Util.getInstance();
+SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 %>

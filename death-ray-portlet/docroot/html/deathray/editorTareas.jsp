@@ -1,3 +1,4 @@
+<%@page import="com.liferay.portal.service.UserGroupLocalServiceUtil"%>
 <%@page
 	import="com.google.api.services.datastore.DatastoreV1.EntityResult"%>
 <%@page import="com.google.api.services.datastore.DatastoreV1.Entity"%>
@@ -23,6 +24,7 @@
 	List<EntityResult> tareas = tarea.findAllTaskByProyecto(groupId);
 	
 	HashMap<Long, String> estados = util.getEstados();
+	UserGroup userGroup=UserGroupLocalServiceUtil.getUserGroup(groupId);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -36,11 +38,30 @@
 		name="editorTareasForm" action="<portlet:actionURL /> " method="post"
 		class="editorTareasForm">
 
-		<input type="hidden" name="group_id" value="<%=groupId%>" /> <input
-			type="hidden" name="action" value="edit_task" />
-		<span>
-			Identificador del proyecto: <%=groupId%>
-		</span>
+		<input type="hidden" name="group_id" value="<%=groupId%>" />
+		<input type="hidden" name="keyName" value="" />
+		<input type="hidden" name="action" value="edit_task" />
+
+		<aui:layout>
+			<aui:fieldset label="Tareas por Proyecto" >
+				<aui:layout>
+					<aui:column columnWidth="25">
+            Identificador del proyecto: 
+				</aui:column>
+					<aui:column columnWidth="25">
+						<%=groupId%>
+					</aui:column>
+					<aui:column columnWidth="25">
+            Nombre del proyecto:
+				</aui:column>
+					<aui:column columnWidth="25">
+						<%=userGroup.getName() %>
+					</aui:column>
+				</aui:layout>
+			</aui:fieldset>
+			</aui:layout>
+		
+
 
 		<liferay-ui:search-container delta="5"
 			emptyResultsMessage="Sin tareas definidas">
@@ -75,12 +96,12 @@
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text name="Fecha de Inicio">
-					<span class=""> <%=util.timestampMicrosecondsToDate(entityResult.getEntity().getProperty(0).getValue(0).getTimestampMicrosecondsValue())%>
+					<span class=""> <%=dateFormat.format( util.timestampMicrosecondsToDate(entityResult.getEntity().getProperty(0).getValue(0).getTimestampMicrosecondsValue()))%>
 					</span>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text name="Fecha de Fin">
-					<span class=""> <%=util.timestampMicrosecondsToDate(entityResult.getEntity().getProperty(1).getValue(0).getTimestampMicrosecondsValue())%>
+					<span class=""> <%=dateFormat.format(util.timestampMicrosecondsToDate(entityResult.getEntity().getProperty(1).getValue(0).getTimestampMicrosecondsValue()))%>
 					</span>
 				</liferay-ui:search-container-column-text>
 
@@ -96,7 +117,9 @@
 
 				<liferay-ui:search-container-column-text>
 					<a
-						href="javascript:goToAdminTarea('<%=entityResult.getEntity().getKey().getPathElement(0).getName()%>')">
+						href="javascript:goToAdminTarea('<%=entityResult.getEntity().getKey().getPathElement(0).getName()
+						
+						%>')">
 						Editar Tarea </a>
 				</liferay-ui:search-container-column-text>
 
@@ -108,9 +131,9 @@
 
 
 		<script type="text/javascript">
-			function goToAdminTarea(value_ID) {
-				document.supervisorForm.group_id.value = value_ID;
-				document.supervisorForm.submit();
+			function goToAdminTarea(keyName) {
+				document.editorTareasForm.keyName.value = keyName;
+				document.editorTareasForm.submit();
 			}
 		</script>
 
