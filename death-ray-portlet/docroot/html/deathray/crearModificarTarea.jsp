@@ -43,6 +43,7 @@
 		}
 	}
 	log.info("isSupervisor: " + isSupervisor);
+	
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -57,111 +58,111 @@
 
 		<input type="hidden" name="group_id" value="<%=groupId%>" /> <input
 			type="hidden" name="action"
-			value="<%=action.equals("newTask")?"saveTask":"saveEditedTask"%>" />
+			value="<%=action!=null&&action.equals("newTask")?"saveTask":"saveEditedTask"%>" />
 		<input type="hidden" name="isSupervisor" value="<%=isSupervisor%>" />
+		<div class="<%=action==null?"aui-helper-hidden":""%>">
+			<aui:layout>
+				<aui:column columnWidth="100">
+					<aui:fieldset label="Tarea">
 
-		<aui:layout>
-			<aui:column columnWidth="100">
-				<aui:fieldset label="Tarea">
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Identificador del proyecto: </span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<span><%=groupId%></span>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Identificador del proyecto: </span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<span><%=groupId%></span>
-						</aui:column>
-					</aui:layout>
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Nombre del proyecto:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<span><%=userGroup.getName()%></span>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Nombre del proyecto:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<span><%=userGroup.getName()%></span>
-						</aui:column>
-					</aui:layout>
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Nombre tarea:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<span><%=keyName%> <input
+									type="<%=action!=null&&action.equals("newTask")?"text":"hidden"%>"
+									name="keyName" value="<%=keyName%>" /> </span>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Nombre tarea:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<span><%=keyName%> <input
-								type="<%=action.equals("newTask")?"text":"hidden"%>"
-								name="keyName" value="<%=keyName%>" /> </span>
-						</aui:column>
-					</aui:layout>
-
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Descripción de la tarea:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<%
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Descripción de la tarea:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<%
 								if (isSupervisor) {
 							%>
-							<input id="descripcion" name="descripcion" type="text"
-								value="<%=tareaDao.getDescripcion()%>"></input>
-							<%
+								<input id="descripcion" name="descripcion" type="text"
+									value="<%=tareaDao.getDescripcion()%>"></input>
+								<%
 								} else {
 							%>
-							<span> "<%=tareaDao.getDescripcion()%>"
-							</span>
-							<input type="hidden" id="descripcion" name="descripcion"
-								value="<%=tareaDao.getDescripcion()%>" />
-							<%
+								<span> "<%=tareaDao.getDescripcion()%>"
+								</span>
+								<input type="hidden" id="descripcion" name="descripcion"
+									value="<%=tareaDao.getDescripcion()%>" />
+								<%
 								}
 							%>
 
-						</aui:column>
-					</aui:layout>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Fecha de Inicio:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<input id="fechaInicio" name="fechaInicio" type="text"  class="dateType1"
-								value="<%=tareaDao.getFecha_inicial() %>" />
-						</aui:column>
-					</aui:layout>
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Fecha de Inicio:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<input id="fechaInicio" name="fechaInicio" type="text"
+									class="dateType1" value="<%=tareaDao.getFecha_inicial() %>" />
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Fecha de Terminación:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<%
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Fecha de Terminación:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<%
 								if (!isSupervisor) {
 							%>
-							<input id="fechaTerminacion" name="fechaTerminacion" type="text" class="dateType2"
-								value="<%=tareaDao.getFecha_final()%>"></input>
-							<%
+								<input id="fechaTerminacion" name="fechaTerminacion" type="text"
+									class="dateType2" value="<%=tareaDao.getFecha_final()%>"></input>
+								<%
 								} else {
 							%>
-							<%=tareaDao.getFecha_final()%>
-							<input type="hidden" id="fechaTerminacion"
-								name="fechaTerminacion" value="<%=tareaDao.getFecha_final()%>" />
-							<%
+								<%=tareaDao.getFecha_final()%>
+								<input type="hidden" id="fechaTerminacion"
+									name="fechaTerminacion" value="<%=tareaDao.getFecha_final()%>" />
+								<%
 								}
 							%>
 
-						</aui:column>
-					</aui:layout>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Persona Asignada:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Persona Asignada:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
 
-							<%
+								<%
 								if (isSupervisor) {
 							%>
-							<select id="userId" name="userId">
-								<option value="-1">Seleccione...</option>
-								<%
+								<select id="userId" name="userId">
+									<option value="-1">Seleccione...</option>
+									<%
 									Iterator it = nombres_usuarios.entrySet()
 																	.iterator();
 															while (it.hasNext()) {
@@ -169,87 +170,98 @@
 								%>
 
 
-								<%
+									<%
 									if (pairs
 																		.getKey()
 																		.toString()
 																		.equals(tareaDao.getUserId()
 																				.toString())) {
 								%>
-								<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
-								<%
+									<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
+									<%
 									} else {
 								%>
-								<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
-								<%
+									<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
+									<%
 									}
 								%>
 
-								<%
+									<%
 									}
 								%>
-							</select>
-							<%
+								</select>
+								<%
 								} else {
 							%>
-							<span><%=nombres_usuarios.get(tareaDao
+								<span><%=nombres_usuarios.get(tareaDao
 											.getUserId())%></span>
-							<input type="hidden" id="userId" name="userId"
-								value="<%=tareaDao.getUserId()%>" />
-							<%
+								<input type="hidden" id="userId" name="userId"
+									value="<%=tareaDao.getUserId()%>" />
+								<%
 								}
 							%>
 
-						</aui:column>
-					</aui:layout>
+							</aui:column>
+						</aui:layout>
 
-					<aui:layout>
-						<aui:column columnWidth="50">
-							<span>Estado:</span>
-						</aui:column>
-						<aui:column columnWidth="50">
-							<select id="estadoId" name="estadoId">
-								<option value="-1">Seleccione...</option>
-								<%
+						<aui:layout>
+							<aui:column columnWidth="30">
+								<span>Estado:</span>
+							</aui:column>
+							<aui:column columnWidth="70">
+								<select id="estadoId" name="estadoId">
+									<option value="-1">Seleccione...</option>
+									<%
 									Iterator it = estados.entrySet().iterator();
 														while (it.hasNext()) {
 															Map.Entry pairs = (Map.Entry) it.next();
 								%>
 
 
-								<%
+									<%
 									if (pairs
 																	.getKey()
 																	.toString()
 																	.equals(tareaDao.getEstado()
 																			.toString())) {
 								%>
-								<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
-								<%
+									<option value="<%=pairs.getKey()%>" selected="selected"><%=pairs.getValue()%></option>
+									<%
 									} else {
 								%>
-								<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
-								<%
+									<option value="<%=pairs.getKey()%>"><%=pairs.getValue()%></option>
+									<%
 									}
 								%>
 
-								<%
+									<%
 									}
 								%>
-							</select>
-						</aui:column>
-					</aui:layout>
+								</select>
+							</aui:column>
+						</aui:layout>
 
-				</aui:fieldset>
-			</aui:column>
-		</aui:layout>
-		<aui:button-row>
-			<aui:button name="saveButton" type="submit" value="save" />
-			<aui:button name="cancelButton" type="button" value="cancel"
-				onClick="cancelFunction()" />
-		</aui:button-row>
+					</aui:fieldset>
+				</aui:column>
+			</aui:layout>
+
+		</div>
+		<div class="<%=action==null?"aui-helper-hidden":""%>">
+			<aui:button-row>
+				<aui:button name="saveButton" type="submit" value="save" />
+
+				<aui:button name="cancelButton" type="button" value="cancel"
+					onClick="cancelFunction()" />
+
+			</aui:button-row>
+		</div>
 
 		<script type="text/javascript">
+			if (
+		<%=action==null%>
+			) {
+				cancelFunction();
+			}
 			function cancelFunction() {
 				document.editorTareaForm.action.value = "cancelSaveTask";
 				document.editorTareaForm.submit();

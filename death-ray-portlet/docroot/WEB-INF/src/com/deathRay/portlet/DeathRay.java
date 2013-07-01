@@ -47,6 +47,7 @@ public class DeathRay extends MVCPortlet {
 	private static final String home = "/html/deathray/view.jsp";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private Long group_id=0L;
+	private String keyName = "";
 	
 	
 
@@ -58,7 +59,6 @@ public class DeathRay extends MVCPortlet {
 		page = home;
 		String action = ParamUtil.getString(request, "action", "");
 		log.info("action:"+action);
-		String keyName = "";
 
 		if (request.getParameter("action") != null) {
 			group_id = Long.valueOf(request.getParameter("group_id"));
@@ -156,6 +156,9 @@ public class DeathRay extends MVCPortlet {
 			throws PortletException, IOException {
 		log.info("Entra a doView");
 		if(group_id!=null){
+			request.setAttribute("group_id", group_id);
+		}
+		if(keyName!=null){
 			request.setAttribute("group_id", group_id);
 		}
 		response.setContentType("text/html");
