@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * 
@@ -176,11 +178,18 @@ public class Tarea {
 		List<EntityResult> results = new ArrayList<EntityResult>(response
 				.getBatch().getEntityResultList());
 
+		ListIterator<EntityResult> listIterator=results.listIterator(results.size());
+		List<EntityResult> newResults=new LinkedList<EntityResult>();
+		while(listIterator.hasPrevious()){
+			newResults.add(listIterator.previous());
+		}
+		
+
 		if (response.getBatch().getMoreResults() == QueryResultBatch.MoreResultsType.NOT_FINISHED) {
 			log.warn("WARNING: partial results\n");
 		}
 
-		return results;
+		return newResults;
 	}
 
 	/**

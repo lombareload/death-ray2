@@ -11,10 +11,10 @@
 <%@include file="init.jsp"%>
 
 <%
-	Long groupId = (Long) request.getAttribute("group_id");
-String error = (String)request.getAttribute("error");
+	//Long groupId = (Long) request.getAttribute("group_id");
+	String error = (String)request.getAttribute("error");
 
-	groupId = (groupId == null ? 0 : groupId);
+	/*groupId = (groupId == null ? 0 : groupId);
 
 	List<User> users = UserLocalServiceUtil.getUserGroupUsers(groupId);
 	HashMap<Long, String> nombres_usuarios = new HashMap<Long, String>();
@@ -23,13 +23,26 @@ String error = (String)request.getAttribute("error");
 		nombres_usuarios
 				.put(esclavo.getUserId(), esclavo.getFullName());
 	}
+	*/
+	
+	List<UserGroup> usersGroup = thisUser.getUserGroups();
+	HashMap<Long, String> nombres_grupos = new HashMap<Long, String>();
+	nombres_grupos.put(-1L, "");
+	for (UserGroup userGroup : usersGroup) {
+		nombres_grupos
+				.put(userGroup.getUserGroupId(), userGroup.getName());
+	}
 
 	Tarea tarea = new Tarea();
-	List<EntityResult> tareas = tarea.findAllTaskByProyecto(groupId);
+	
+	Long userId = thisUser.getUserId();
+	userId = (userId == null ? 0 : userId);
+	List<EntityResult> tareas = tarea.findAllTaskByUsuario(userId);	
 
 	HashMap<Long, String> estados = util.getEstados();
-	UserGroup userGroup = UserGroupLocalServiceUtil
-			.getUserGroup(groupId);
+	
+	
+	//UserGroup userGroup = UserGroupLocalServiceUtil.getUserGroup(groupId);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -52,24 +65,24 @@ String error = (String)request.getAttribute("error");
 		name="editorTareasForm" action="<portlet:actionURL /> " method="post"
 		class="editorTareasForm">
 
-		<input type="hidden" id="group_id" name="group_id" value="<%=groupId%>" /> <input
-			type="hidden" name="keyName" value="" /> <input type="hidden"
+		<input type="hidden" id="group_id" name="group_id" value="" /> 
+		<input type="hidden" name="keyName" value="" /> <input type="hidden"
 			name="action" value="edit_tasks" />
 
 		<aui:layout>
-			<aui:fieldset label="Tareas por Proyecto">
+			<aui:fieldset label="Tareas por Persona">
 				<aui:layout>
 					<aui:column columnWidth="25">
-            Identificador del proyecto: 
+            Identificador del persona: 
 				</aui:column>
 					<aui:column columnWidth="25">
-						<%=groupId%>
+						<%=thisUser.getUserId()%>
 					</aui:column>
 					<aui:column columnWidth="25">
             Nombre del proyecto:
 				</aui:column>
 					<aui:column columnWidth="25">
-						<%=userGroup.getName()%>
+						<%=thisUser.getFullName()%>
 					</aui:column>
 				</aui:layout>
 			</aui:fieldset>
@@ -101,6 +114,16 @@ String error = (String)request.getAttribute("error");
 				className="com.google.api.services.datastore.DatastoreV1.EntityResult"
 				modelVar="entityResult">
 
+				<liferay-ui:search-container-column-text name="Identificador Proyecto">
+					<span class=""> <%=entityResult.getEntity().getProperty(4).getValue(0).getIntegerValue()%>
+					</span>
+				</liferay-ui:search-container-column-text>
+				
+				<liferay-ui:search-container-column-text name="Proyecto">
+					<span class=""> <%=nombres_grupos.get(entityResult.getEntity().getProperty(4).getValue(0).getIntegerValue())%>
+					</span>
+				</liferay-ui:search-container-column-text>
+				
 				<liferay-ui:search-container-column-text name="Nombre">
 					<span class=""> <%=entityResult.getEntity().getKey()
 								.getPathElement(0).getName()%>
@@ -127,12 +150,6 @@ String error = (String)request.getAttribute("error");
 					</span>
 				</liferay-ui:search-container-column-text>
 
-				<liferay-ui:search-container-column-text name="Persona Asignada">
-					<span class=""> <%=nombres_usuarios.get(entityResult.getEntity()
-								.getProperty(3).getValue(0).getIntegerValue())%>
-					</span>
-				</liferay-ui:search-container-column-text>
-
 				<liferay-ui:search-container-column-text name="Estados">
 					<span class=""> <%=estados.get(entityResult.getEntity()
 								.getProperty(2).getValue(0).getIntegerValue())%>
@@ -142,7 +159,7 @@ String error = (String)request.getAttribute("error");
 				<liferay-ui:search-container-column-text>
 					<a
 						href="javascript:goToAdminTarea('<%=entityResult.getEntity().getKey()
-								.getPathElement(0).getName()%>')">
+								.getPathElement(0).getName()%>', '<%=entityResult.getEntity().getProperty(4).getValue(0).getIntegerValue()%>')">
 						Editar Tarea </a>
 				</liferay-ui:search-container-column-text>
 
@@ -152,24 +169,13 @@ String error = (String)request.getAttribute("error");
 		</liferay-ui:search-container>
 
 		<aui:button-row>
-			<aui:button name="newTask" type="button" value="Crear Tarea"
-				onClick="newFunction()" />
-			<aui:button name="return" type="button" value="Volver"
-				onClick="goBack()" />
 		</aui:button-row>
 
 		<script type="text/javascript">
-			function goToAdminTarea(keyName) {
+			function goToAdminTarea(keyName, goupId) {
 				document.editorTareasForm.keyName.value = keyName;
 				document.editorTareasForm.action.value = "edit_task";
-				document.editorTareasForm.submit();
-			}
-			function newFunction() {
-				document.editorTareasForm.action.value = "newTask";
-				document.editorTareasForm.submit();
-			}
-			function goBack() {
-				document.editorTareasForm.action.value = "goBack";
+				document.editorTareasForm.group_id.value = goupId;
 				document.editorTareasForm.submit();
 			}
 		</script>

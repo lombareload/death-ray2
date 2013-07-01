@@ -46,6 +46,7 @@ public class DeathRay extends MVCPortlet {
 	private String page = "/html/deathray/view.jsp";
 	private static final String home = "/html/deathray/view.jsp";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private Long group_id=0L;
 	
 	
 
@@ -54,12 +55,13 @@ public class DeathRay extends MVCPortlet {
 			throws PortletException, IOException {
 
 		log.info("Entra a processAction");
+		page = home;
 		String action = ParamUtil.getString(request, "action", "");
 		log.info("action:"+action);
 		String keyName = "";
 
 		if (request.getParameter("action") != null) {
-			Long group_id = Long.valueOf(request.getParameter("group_id"));
+			group_id = Long.valueOf(request.getParameter("group_id"));
 			log.info("group_id:"+group_id);
 
 			if (action.equals("edit_tasks")) {
@@ -137,6 +139,8 @@ public class DeathRay extends MVCPortlet {
 
 			} else if (action.equals("newTask")) {
 				page = "/html/deathray/crearModificarTarea.jsp";
+			} else if (action.equals("goBack")) {
+				page = "/html/deathray/view.jsp";
 			}
 			request.setAttribute("group_id", group_id);
 		}
@@ -151,10 +155,13 @@ public class DeathRay extends MVCPortlet {
 	public void doView(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
 		log.info("Entra a doView");
+		if(group_id!=null){
+			request.setAttribute("group_id", group_id);
+		}
 		response.setContentType("text/html");
 		PortletRequestDispatcher dispatcher = getPortletContext()
 				.getRequestDispatcher(page);
-		page = home;
+		
 		dispatcher.include(request, response);
 	}
 
