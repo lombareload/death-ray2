@@ -12,6 +12,7 @@
 
 <%
 	Long groupId = (Long) request.getAttribute("group_id");
+String error = (String)request.getAttribute("error");
 
 	groupId = (groupId == null ? 0 : groupId);
 
@@ -39,13 +40,21 @@
 </head>
 <body>
 
+	<%
+            if (error!=null&&!error.isEmpty()) {
+        %>
+	<div class="portlet-msg-error" id="errorMessage">  
+	<%=error%>          
+            </div>
+	<%} %>
+
 	<form id="<portlet:namespace />editorTareasForm"
 		name="editorTareasForm" action="<portlet:actionURL /> " method="post"
 		class="editorTareasForm">
 
 		<input type="hidden" name="group_id" value="<%=groupId%>" /> <input
 			type="hidden" name="keyName" value="" /> <input type="hidden"
-			name="action" value="edit_task" />
+			name="action" value="edit_tasks" />
 
 		<aui:layout>
 			<aui:fieldset label="Tareas por Proyecto">
@@ -150,6 +159,7 @@
 		<script type="text/javascript">
 			function goToAdminTarea(keyName) {
 				document.editorTareasForm.keyName.value = keyName;
+				document.editorTareasForm.action.value = "edit_task";
 				document.editorTareasForm.submit();
 			}
 			function newFunction() {

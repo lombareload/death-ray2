@@ -11,7 +11,6 @@
 
 <%
 	Long groupId = (Long) request.getAttribute("group_id");
-	String error = (String)request.getAttribute("error");
 	groupId = (groupId == null ? 0 : groupId);
 	String keyName = (String) request.getAttribute("keyName");
 	String action = (String) request.getAttribute("action");
@@ -52,14 +51,6 @@
 <title>Crear o Modificar Tareas</title>
 </head>
 <body>
-
-	<%
-            if (error!=null&&!error.isEmpty()) {
-        %>
-	<div class="portlet-msg-error" id="errorMessage">  
-	<%=error%>          
-            </div>
-	<%} %>
 
 	<form id="<portlet:namespace />editorTareaForm" name="editorTareaForm"
 		action="<portlet:actionURL /> " method="post" class="editorTareaForm">

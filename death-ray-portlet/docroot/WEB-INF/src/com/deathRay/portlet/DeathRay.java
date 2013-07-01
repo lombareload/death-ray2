@@ -29,6 +29,8 @@ public class DeathRay extends MVCPortlet {
 	private String page = "/html/deathray/view.jsp";
 	private static final String home = "/html/deathray/view.jsp";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	
+	
 
 	@Override
 	public void processAction(ActionRequest request, ActionResponse response)
@@ -36,11 +38,12 @@ public class DeathRay extends MVCPortlet {
 
 		log.info("Entra a processAction");
 		String action = ParamUtil.getString(request, "action", "");
-		Long group_id = 0L;
+		log.info("action:"+action);
 		String keyName = "";
 
 		if (request.getParameter("action") != null) {
-			group_id = Long.valueOf(request.getParameter("group_id"));
+			Long group_id = Long.valueOf(request.getParameter("group_id"));
+			log.info("group_id:"+group_id);
 
 			if (action.equals("edit_tasks")) {
 				log.info("edit_tasks");
@@ -62,12 +65,13 @@ public class DeathRay extends MVCPortlet {
 							+ request.getParameter("group_id"));
 				}
 
-			} else if (action.equals("saveTask") || action.equals("cancelSaveTask") || action.equals("saveEditedTask")) {
+			} else if (action.equals("saveTask")
+					|| action.equals("cancelSaveTask")
+					|| action.equals("saveEditedTask")) {
 
 				boolean isSupervisor = Boolean.valueOf(request
 						.getParameter("isSupervisor"));
-				keyName = String.valueOf(request
-						.getParameter("keyName"));
+				keyName = String.valueOf(request.getParameter("keyName"));
 
 				if (isSupervisor) {
 					page = "/html/deathray/editorTareas.jsp";
@@ -75,31 +79,37 @@ public class DeathRay extends MVCPortlet {
 					page = home;
 				}
 
-				if (action.equals("saveTask") || action.equals("saveEditedTask")) {
+				if (action.equals("saveTask")
+						|| action.equals("saveEditedTask")) {
 
 					try {
 						Tarea tarea = new Tarea();
-						
+
 						TareaDao taskFound = tarea.findTaskByName(keyName);
-						if(taskFound.getName().isEmpty() || action.equals("saveEditedTask")){
+						if (taskFound.getName().isEmpty()
+								|| action.equals("saveEditedTask")) {
 							String descripcion = String.valueOf(request
 									.getParameter("descripcion"));
 							String fechaInicio = String.valueOf(request
 									.getParameter("fechaInicio"));
-							Date fecha_inicial = fechaInicio.isEmpty()?null:dateFormat.parse(fechaInicio);
+							Date fecha_inicial = fechaInicio.isEmpty() ? null
+									: dateFormat.parse(fechaInicio);
 							String fechaTerminacion = String.valueOf(request
 									.getParameter("fechaTerminacion"));
-							Date fecha_final = fechaTerminacion.isEmpty()?null:dateFormat.parse(fechaTerminacion);
+							Date fecha_final = fechaTerminacion.isEmpty() ? null
+									: dateFormat.parse(fechaTerminacion);
 							String user_Id = request.getParameter("userId");
 							Long userId = Long.valueOf(user_Id);
 							String estadoId = request.getParameter("estadoId");
 							Long estado = Long.valueOf(estadoId);
-							tarea.createOrUpdateTarea(fecha_inicial, fecha_final, estado, userId, group_id, keyName, descripcion);	
-						}else{
-							request.setAttribute("error", "Ya existe una tarea con este nombre");
-							page = "/html/deathray/crearModificarTarea.jsp";
+							tarea.createOrUpdateTarea(fecha_inicial,
+									fecha_final, estado, userId, group_id,
+									keyName, descripcion);
+						} else {
+							request.setAttribute("error",
+									"Ya existe una tarea con este nombre");
+							page = "/html/deathray/editorTareas.jsp";
 						}
-						
 
 					} catch (Exception ex) {
 						log.info("Error in Long.valueOf "
@@ -108,12 +118,13 @@ public class DeathRay extends MVCPortlet {
 
 				}
 
-			} else if(action.equals("newTask")){
+			} else if (action.equals("newTask")) {
 				page = "/html/deathray/crearModificarTarea.jsp";
 			}
-
+			request.setAttribute("group_id", group_id);
 		}
-		request.setAttribute("group_id", group_id);
+		
+		
 		request.setAttribute("keyName", keyName);
 		request.setAttribute("action", action);
 		response.setPortletMode(PortletMode.VIEW);
@@ -123,7 +134,6 @@ public class DeathRay extends MVCPortlet {
 	public void doView(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
 		log.info("Entra a doView");
-		log.info("page: " + page);
 		response.setContentType("text/html");
 		PortletRequestDispatcher dispatcher = getPortletContext()
 				.getRequestDispatcher(page);
