@@ -66,6 +66,19 @@ public class AuthorizationUtil {
 				build().
 				setFromTokenResponse(tokenResponse);
 		log.debug("creando oauth2");
+//		try{
+//			Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JACKSON_FACTORY, credential).build();
+//			log.debug("creando tokeninfo");
+//			Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(credential.getAccessToken()).execute();
+//			log.debug(tokeninfo.toString());
+//			if(tokeninfo.containsKey("error")){
+//				log.error("tokeninfo retornado por google contiene error: " + tokeninfo.get("error"));
+//				throw new DeathRayTokenResponseException();
+//			}
+//		} catch (Exception e) {
+//			log.error("Excepcion creando oauth2", e);
+//			return null;
+//		}
 		
 		/*
 		// verificacion de que el token esta dando permiso al usuario actual
@@ -93,6 +106,7 @@ public class AuthorizationUtil {
 		log.info("credential.getRefreshToken() = " + credential.getRefreshToken());
 		return credential;
 	}
+	
 
 	private static class AuthorizationUtilHolder{
 		private static final AuthorizationUtil INSTANCE = new AuthorizationUtil();

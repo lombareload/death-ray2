@@ -1,7 +1,7 @@
 <%@page import="com.deathRay.util.ConfigurationProperties"%>
 <%@page import="com.liferay.portal.model.Role"%>
 <%@page import="com.liferay.portal.util.PortalUtil"%>
-<%@page import="com.google.api.services.drive.DriveScopes" %>
+<%@page import="com.google.api.services.drive.DriveScopes"%>
 <%@include  file="init.jsp" %>
 
 <div id="google-authorization">

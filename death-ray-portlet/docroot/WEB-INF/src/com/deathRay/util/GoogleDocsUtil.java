@@ -10,9 +10,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 //import com.google.gdata.util.ServiceException;
 
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.DriveScopes;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -27,7 +25,9 @@ public class GoogleDocsUtil {
 
 //	private static final SpreadsheetService service = new SpreadsheetService(ConfigurationProperties.getInstance().getProperty("APPLICATION_NAME"));
 	private static final Log log = LogFactoryUtil.getLog(GoogleDocsUtil.class);
-	private Drive drive;
+//	private static final DocsService service = new DocsService(ConfigurationProperties.getInstance().getProperty("APPLICATION_NAME"));
+	private Drive service;
+	
 	
 	// singleton
 	private GoogleDocsUtil(){}
@@ -44,12 +44,9 @@ public class GoogleDocsUtil {
 	
 	public void grantAccess(String code) throws IOException{
 		GoogleCredential credential = AuthorizationUtil.getInstance().getGoogleCredential(code);
-		drive = getDriveService(credential);
-		File file = new File();
-		file.setMimeType("application/vnd.google-apps.spreadsheet");
-//		
-		List<File> archivos = drive.files().list().execute().getItems();
-		log.info(Arrays.toString(archivos.toArray()));
+		service = getService(credential);
+		List<File> files = service.files().list().execute().getItems();
+		log.info(Arrays.toString(files.toArray()));
 //		service.setOAuth2Credentials(credential);
 //		URL url = new URL("http://spreadsheets.google.com/feeds/spreadsheets/private/full");
 //		try{
@@ -62,7 +59,8 @@ public class GoogleDocsUtil {
 //		}
 	}
 	
-	private Drive getDriveService(GoogleCredential credential){
+	public Drive getService(GoogleCredential credential){
 		return new Drive.Builder(AuthorizationUtil.TRANSPORT, AuthorizationUtil.JACKSON_FACTORY, credential).build();
 	}
+	
 }

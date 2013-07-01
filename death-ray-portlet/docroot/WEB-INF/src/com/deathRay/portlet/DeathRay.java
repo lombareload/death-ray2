@@ -46,7 +46,7 @@ public class DeathRay extends MVCPortlet {
 	private String page = "/html/deathray/view.jsp";
 	private static final String home = "/html/deathray/view.jsp";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-	
+
 	@Override
 	public void processAction(ActionRequest request, ActionResponse response)
 			throws PortletException, IOException {
