@@ -97,6 +97,9 @@ function enviarCodigoAlServidor(code){
 	}	
 	log.info("isSupervisor: "+isSupervisor);
 %>
+
+
+
 <%
 if(isSupervisor){
 %>
@@ -104,6 +107,7 @@ if(isSupervisor){
 <%
 }
 %>
+
 <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=autenticarGoogleDriveApi"></script>
 
 

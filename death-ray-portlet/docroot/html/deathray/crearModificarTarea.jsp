@@ -56,8 +56,9 @@
 		action="<portlet:actionURL /> " method="post" class="editorTareaForm">
 
 		<input type="hidden" name="group_id" value="<%=groupId%>" /> <input
-			type="hidden" name="action" value="<%=action.equals("newTask")?"saveTask":"saveEditedTask"%>" /> <input type="hidden"
-			name="isSupervisor" value="<%=isSupervisor%>" />
+			type="hidden" name="action"
+			value="<%=action.equals("newTask")?"saveTask":"saveEditedTask"%>" />
+		<input type="hidden" name="isSupervisor" value="<%=isSupervisor%>" />
 
 		<aui:layout>
 			<aui:column columnWidth="100">
@@ -121,8 +122,8 @@
 							<span>Fecha de Inicio:</span>
 						</aui:column>
 						<aui:column columnWidth="50">
-							<input id="fechaInicio" name="fechaInicio" type="text"
-								value="<%=tareaDao.getFecha_inicial()%>" />
+							<input id="fechaInicio" name="fechaInicio" type="text"  class="dateType1"
+								value="<%=tareaDao.getFecha_inicial() %>" />
 						</aui:column>
 					</aui:layout>
 
@@ -134,15 +135,14 @@
 							<%
 								if (!isSupervisor) {
 							%>
-							<input id="fechaTerminacion" name="fechaTerminacion" type="text"
+							<input id="fechaTerminacion" name="fechaTerminacion" type="text" class="dateType2"
 								value="<%=tareaDao.getFecha_final()%>"></input>
 							<%
 								} else {
 							%>
 							<%=tareaDao.getFecha_final()%>
 							<input type="hidden" id="fechaTerminacion"
-								name="fechaTerminacion"
-								value="<%=tareaDao.getFecha_final()%>" />
+								name="fechaTerminacion" value="<%=tareaDao.getFecha_final()%>" />
 							<%
 								}
 							%>
@@ -254,6 +254,25 @@
 				document.editorTareaForm.action.value = "cancelSaveTask";
 				document.editorTareaForm.submit();
 			}
+
+			$(document).ready(function() {
+
+				// assuming the controls you want to attach the plugin to 
+				// have the "datepicker" class set
+				$('.dateType1').Zebra_DatePicker({
+					view : 'years',
+					format : 'd/m/Y',
+					direction : 0,
+					pair : $('.dateType2')
+				});
+
+				$('.dateType2').Zebra_DatePicker({
+					view : 'years',
+					format : 'd/m/Y',
+					direction : 1
+				});
+
+			});
 		</script>
 
 	</form>

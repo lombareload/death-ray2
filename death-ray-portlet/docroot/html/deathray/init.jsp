@@ -24,6 +24,13 @@
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
 <%@page import="java.text.SimpleDateFormat"%>
 
+<script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery.min.js"></script>
+<%--
+ Calendario:
+--%>
+ <link rel="stylesheet" href="<%= request.getContextPath()%>/css/cssZebra/metallic.css" />
+<script src="<%= request.getContextPath()%>/js/zebra_datepicker.js"></script>
+
 <portlet:defineObjects />
 <liferay-theme:defineObjects />
 

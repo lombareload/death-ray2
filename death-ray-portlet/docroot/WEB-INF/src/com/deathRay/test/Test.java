@@ -22,7 +22,7 @@ public class Test {
 		Util util = Util.getInstance();
 		try {
 			// Crea o actualiza una tarea:
-			tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
+			/**/tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
 					10723L, 10719L, "tarea1", "Arreglar Portlet");
 			System.out.println("Tarea Creada : " + tareaDao.toString());
 			tareaDao = tarea.createOrUpdateTarea(new Date(), new Date(), 4L,
@@ -37,7 +37,7 @@ public class Test {
 			List<EntityResult> results = tarea.findAllTask();
 			Entity entity;
 			TareaDao foundTareaDao;
-			for (EntityResult entityResult : results) {
+					for (EntityResult entityResult : results) {
 				entity = entityResult.getEntity();
 				foundTareaDao = util.entidadToTareaDao(entity);
 				System.out.println(foundTareaDao.toString() + "\n");
@@ -58,7 +58,7 @@ public class Test {
 				foundTareaDao = util.entidadToTareaDao(entity);
 				System.out.println(foundTareaDao.toString() + "\n");
 			}
-
+			/**/
 			System.out.println("Tareas por estado:");
 			List<EntityResult> resultsByStatus = tarea.findAllTaskByEstado(4L);
 			for (EntityResult entityResult : resultsByStatus) {
