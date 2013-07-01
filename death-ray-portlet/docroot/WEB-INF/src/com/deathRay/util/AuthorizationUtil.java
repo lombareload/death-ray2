@@ -29,8 +29,8 @@ public class AuthorizationUtil {
 	private static final String CLIENT_ID = ConfigurationProperties.getInstance().getProperty("CLIENT_ID", "869906549016.apps.googleusercontent.com");
 	private static final String CLIENT_SECRET = ConfigurationProperties.getInstance().getProperty("CLIENT_SECRET", "qQj9lWu2EDocTCNYRwr1SsKN");
 //	private static final String APPLICATION_NAME = ConfigurationProperties.getInstance().getProperty("APPLICATION_NAME", "DeathRay");
-	private static final JacksonFactory JACKSON_FACTORY = new JacksonFactory();
-	private static final HttpTransport TRANSPORT = new NetHttpTransport();
+	public static final JacksonFactory JACKSON_FACTORY = new JacksonFactory();
+	public static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final Log log = LogFactoryUtil.getLog(AuthorizationUtil.class);;
 	
 	// singleton
@@ -66,19 +66,6 @@ public class AuthorizationUtil {
 				build().
 				setFromTokenResponse(tokenResponse);
 		log.debug("creando oauth2");
-//		try{
-//			Oauth2 oauth2 = new Oauth2.Builder(TRANSPORT, JACKSON_FACTORY, credential).build();
-//			log.debug("creando tokeninfo");
-//			Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(credential.getAccessToken()).execute();
-//			log.debug(tokeninfo.toString());
-//			if(tokeninfo.containsKey("error")){
-//				log.error("tokeninfo retornado por google contiene error: " + tokeninfo.get("error"));
-//				throw new DeathRayTokenResponseException();
-//			}
-//		} catch (Exception e) {
-//			log.error("Excepcion creando oauth2", e);
-//			return null;
-//		}
 		
 		/*
 		// verificacion de que el token esta dando permiso al usuario actual
@@ -106,7 +93,6 @@ public class AuthorizationUtil {
 		log.info("credential.getRefreshToken() = " + credential.getRefreshToken());
 		return credential;
 	}
-	
 
 	private static class AuthorizationUtilHolder{
 		private static final AuthorizationUtil INSTANCE = new AuthorizationUtil();

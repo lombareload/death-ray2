@@ -1,6 +1,7 @@
 <%@page import="com.deathRay.util.ConfigurationProperties"%>
 <%@page import="com.liferay.portal.model.Role"%>
 <%@page import="com.liferay.portal.util.PortalUtil"%>
+<%@page import="com.google.api.services.drive.DriveScopes" %>
 <%@include  file="init.jsp" %>
 
 <div id="google-authorization">
@@ -10,7 +11,7 @@
 <script type="text/javascript">
 function autenticarGoogleDriveApi() {
 	var CLIENT_ID = '<%= ConfigurationProperties.getInstance().getProperty("CLIENT_ID") %>';
-	var SCOPES = "https://www.googleapis.com/auth/drive";
+	var SCOPES = "<%= DriveScopes.DRIVE %>";
 	
 	var googleButton = document.getElementById("google-authorize-button");
 	if(gapi.auth.getToken()){
