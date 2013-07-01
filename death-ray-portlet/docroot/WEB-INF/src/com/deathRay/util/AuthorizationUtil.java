@@ -29,8 +29,8 @@ public class AuthorizationUtil {
 	private static final String CLIENT_ID = ConfigurationProperties.getInstance().getProperty("CLIENT_ID", "869906549016.apps.googleusercontent.com");
 	private static final String CLIENT_SECRET = ConfigurationProperties.getInstance().getProperty("CLIENT_SECRET", "qQj9lWu2EDocTCNYRwr1SsKN");
 //	private static final String APPLICATION_NAME = ConfigurationProperties.getInstance().getProperty("APPLICATION_NAME", "DeathRay");
-	private static final JacksonFactory JACKSON_FACTORY = new JacksonFactory();
-	private static final HttpTransport TRANSPORT = new NetHttpTransport();
+	public static final JacksonFactory JACKSON_FACTORY = new JacksonFactory();
+	public static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final Log log = LogFactoryUtil.getLog(AuthorizationUtil.class);;
 	
 	// singleton
