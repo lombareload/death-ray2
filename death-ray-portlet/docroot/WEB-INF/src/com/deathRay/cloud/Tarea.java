@@ -60,8 +60,15 @@ public class Tarea {
 			Long estado, Long userId, Long groupId, String nombre,
 			String descripcion) throws DatastoreException {
 
-		Long time_inicial = util.dateToTimestampMicroseconds(fecha_inicial);
-		Long time_final = util.dateToTimestampMicroseconds(fecha_final);
+		log.info("Entra a createOrUpdateTarea");
+		Long time_inicial=0L;
+		Long time_final=0L;
+		if (fecha_inicial != null) {
+			time_inicial = util.dateToTimestampMicroseconds(fecha_inicial);
+		}
+		if (fecha_final != null) {
+			time_final = util.dateToTimestampMicroseconds(fecha_final);
+		}
 		Entity entityFound = null;
 
 		Entity.Builder tarea = Entity.newBuilder();
@@ -263,16 +270,19 @@ public class Tarea {
 	}
 
 	public TareaDao findTaskByName(String nombre) throws DatastoreException {
+		Entity entityFound = null;
+		if (!nombre.isEmpty()) {
+			Key.Builder key = Key.newBuilder().addPathElement(
+					Key.PathElement.newBuilder().setKind("Tarea")
+							.setName(nombre));
 
-		Key.Builder key = Key.newBuilder().addPathElement(
-				Key.PathElement.newBuilder().setKind("Tarea").setName(nombre));
-
-		LookupRequest.Builder lreq = LookupRequest.newBuilder();
-		lreq.addKey(key);
-
-		LookupResponse lresp = datastore.lookup(lreq.build());
-		Entity entityFound = lresp.getFound(0).getEntity();
-
+			LookupRequest.Builder lreq = LookupRequest.newBuilder();
+			lreq.addKey(key);
+			LookupResponse lresp = datastore.lookup(lreq.build());
+			if(lresp!=null&& lresp.getFoundCount()>0 &&lresp.getFound(0)!=null&&lresp.getFound(0).getEntity()!=null){
+				entityFound = lresp.getFound(0).getEntity();
+			}
+		}
 		return util.entidadToTareaDao(entityFound);
 	}
 }
