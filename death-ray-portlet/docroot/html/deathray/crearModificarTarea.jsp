@@ -102,7 +102,7 @@
 								<%
 								if (isSupervisor) {
 							%>
-								<input id="descripcion" name="descripcion" type="text"
+								<input id="descripcion" name="descripcion" type="text" size="50"
 									value="<%=tareaDao.getDescripcion()%>"></input>
 								<%
 								} else {

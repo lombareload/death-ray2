@@ -43,18 +43,18 @@ String error = (String)request.getAttribute("error");
 	<%
             if (error!=null&&!error.isEmpty()) {
         %>
-	<div class="portlet-msg-error" id="errorMessage">  
-	<%=error%>          
-            </div>
+	<div class="portlet-msg-error" id="errorMessage">
+		<%=error%>
+	</div>
 	<%} %>
 
 	<form id="<portlet:namespace />editorTareasForm"
 		name="editorTareasForm" action="<portlet:actionURL /> " method="post"
 		class="editorTareasForm">
 
-		<input type="hidden" id="group_id" name="group_id" value="<%=groupId%>" /> <input
-			type="hidden" name="keyName" value="" /> <input type="hidden"
-			name="action" value="edit_tasks" />
+		<input type="hidden" id="group_id" name="group_id"
+			value="<%=groupId%>" /> <input type="hidden" name="keyName" value="" />
+		<input type="hidden" name="action" value="edit_tasks" />
 
 		<aui:layout>
 			<aui:fieldset label="Tareas por Proyecto">
@@ -62,13 +62,15 @@ String error = (String)request.getAttribute("error");
 					<aui:column columnWidth="25">
             Identificador del proyecto: 
 				</aui:column>
-					<aui:column columnWidth="25">
+					<aui:column columnWidth="75">
 						<%=groupId%>
 					</aui:column>
+				</aui:layout>
+				<aui:layout>
 					<aui:column columnWidth="25">
             Nombre del proyecto:
 				</aui:column>
-					<aui:column columnWidth="25">
+					<aui:column columnWidth="75">
 						<%=userGroup.getName()%>
 					</aui:column>
 				</aui:layout>

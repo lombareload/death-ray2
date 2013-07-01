@@ -56,17 +56,17 @@
 	<%
             if (error!=null&&!error.isEmpty()) {
         %>
-	<div class="portlet-msg-error" id="errorMessage">  
-	<%=error%>          
-            </div>
+	<div class="portlet-msg-error" id="errorMessage">
+		<%=error%>
+	</div>
 	<%} %>
 
 	<form id="<portlet:namespace />editorTareasForm"
 		name="editorTareasForm" action="<portlet:actionURL /> " method="post"
 		class="editorTareasForm">
 
-		<input type="hidden" id="group_id" name="group_id" value="" /> 
-		<input type="hidden" name="keyName" value="" /> <input type="hidden"
+		<input type="hidden" id="group_id" name="group_id" value="" /> <input
+			type="hidden" name="keyName" value="" /> <input type="hidden"
 			name="action" value="edit_tasks" />
 
 		<aui:layout>
@@ -75,13 +75,15 @@
 					<aui:column columnWidth="25">
             Identificador del persona: 
 				</aui:column>
-					<aui:column columnWidth="25">
+					<aui:column columnWidth="75">
 						<%=thisUser.getUserId()%>
 					</aui:column>
+				</aui:layout>
+				<aui:layout>
 					<aui:column columnWidth="25">
-            Nombre del proyecto:
+            Nombre:
 				</aui:column>
-					<aui:column columnWidth="25">
+					<aui:column columnWidth="75">
 						<%=thisUser.getFullName()%>
 					</aui:column>
 				</aui:layout>
@@ -114,16 +116,17 @@
 				className="com.google.api.services.datastore.DatastoreV1.EntityResult"
 				modelVar="entityResult">
 
-				<liferay-ui:search-container-column-text name="Identificador Proyecto">
+				<liferay-ui:search-container-column-text
+					name="Identificador Proyecto">
 					<span class=""> <%=entityResult.getEntity().getProperty(4).getValue(0).getIntegerValue()%>
 					</span>
 				</liferay-ui:search-container-column-text>
-				
+
 				<liferay-ui:search-container-column-text name="Proyecto">
 					<span class=""> <%=nombres_grupos.get(entityResult.getEntity().getProperty(4).getValue(0).getIntegerValue())%>
 					</span>
 				</liferay-ui:search-container-column-text>
-				
+
 				<liferay-ui:search-container-column-text name="Nombre">
 					<span class=""> <%=entityResult.getEntity().getKey()
 								.getPathElement(0).getName()%>
