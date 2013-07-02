@@ -25,6 +25,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 
 <script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%= request.getContextPath()%>/css/deathRay.css" />
 <%--
  Calendario:
 --%>
@@ -40,3 +41,6 @@ Log log = LogFactoryUtil.getLog("view.jsp");
 Util util = Util.getInstance();
 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 %>
+
+
+

@@ -130,6 +130,7 @@ if(isSupervisor){
 <%
 }
 %>
+<jsp:include page="/html/deathray/tareasAsignadas.jsp" />
 
 <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=autenticarGoogleDriveApi"></script>
 
