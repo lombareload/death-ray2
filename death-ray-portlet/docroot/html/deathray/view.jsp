@@ -2,10 +2,11 @@
 <%@page import="com.liferay.portal.model.Role"%>
 <%@page import="com.liferay.portal.util.PortalUtil"%>
 <%@page import="com.google.api.services.drive.DriveScopes"%>
+<%@page import="com.deathRay.util.TransactionStatus"%>
 <%@include  file="init.jsp" %>
 
 <div id="google-authorization">
-	<button id="google-authorize-button" class="aui-helper-hidden">Permitir acceso a google drive</button>
+	<button id="google-authorize-button" class="aui-helper-hidden">Generar resumen de tareas via google drive</button>
 </div>
 
 <script type="text/javascript">
@@ -68,6 +69,27 @@ function enviarCodigoAlServidor(code){
 			on:{
 				success: function(){
 					var  result = this.get('responseData');
+					if(result.status == '<%= TransactionStatus.NO_ERRORS.ordinal() %>'){
+						
+// 						var driveUrl = document.createElement('a');
+// 						driveUrl.href = result.driveUrl;
+// 						driveUrl.innerHTML = "ver en drive";
+						
+						var gadgetUrl = document.createElement("a");
+						gadgetUrl.onclick = function(){showModalDialog(result.gadgetUrl);};
+						gadgetUrl.style.cursor = "pointer";
+						gadgetUrl.innerHTML = "ver como gadget";
+						var parent = document.getElementById("google-authorization");
+// 						parent.appendChild(driveUrl);
+						var auxText = document.createElement("div");
+						auxText.innerHTML = "se ha guardado una copia de la informacion en google drive";
+						parent.appendChild(auxText);
+						parent.appendChild(gadgetUrl);
+					} else if(result.status == '<%= TransactionStatus.IO_EXCEPTION.ordinal() %>'){
+						alert("no se pudo obtener respuesta desde google, intente mas tarde");
+					} else{
+						alert("se produjo un error");
+					}
 					console.debug('respuesta del servior');
 					console.debug(result);
 				},

@@ -5,6 +5,7 @@ import com.deathRay.util.DeathRayTokenResponseException;
 import com.deathRay.util.GoogleDocsUtil;
 import com.deathRay.util.TransactionStatus;
 import com.google.api.client.auth.oauth2.TokenResponseException;
+import com.google.api.services.drive.model.File;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -185,9 +186,11 @@ public class DeathRay extends MVCPortlet {
 		try{
 			log.debug("llamando metodo en  AuthorizationUtil");
 //			AuthorizationUtil.getInstance().getGoogleCredential(code);
-			GoogleDocsUtil.getInstance().grantAccess(code);
+			File file = GoogleDocsUtil.getInstance().grantAccess(code);
 			log.debug("fin llamado metodo AuthorizationUtil");
 			jResponse.put("status", TransactionStatus.NO_ERRORS.ordinal());
+			jResponse.put("driveUrl", file.getAlternateLink());
+			jResponse.put("gadgetUrl", file.getEmbedLink());
 		} catch(TokenResponseException tre){
 			log.warn("se produjo un error con la autorizacion de google: " + TransactionStatus.TOKEN_RESPONSE_EXCEPTION.toString(), tre);
 			jResponse.put("status", TransactionStatus.TOKEN_RESPONSE_EXCEPTION.ordinal());
