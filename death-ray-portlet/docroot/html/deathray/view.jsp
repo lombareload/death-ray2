@@ -78,7 +78,7 @@ function enviarCodigoAlServidor(code){
 						var gadgetUrl = document.createElement("a");
 						gadgetUrl.onclick = function(){showModalDialog(result.gadgetUrl);};
 						gadgetUrl.style.cursor = "pointer";
-						gadgetUrl.innerHTML = "ver como gadget";
+						gadgetUrl.innerHTML = "ver el resumen";
 						var parent = document.getElementById("google-authorization");
 // 						parent.appendChild(driveUrl);
 						var auxText = document.createElement("div");
