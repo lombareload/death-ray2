@@ -271,11 +271,17 @@ public class Tarea {
 		List<EntityResult> results = new ArrayList<EntityResult>(response
 				.getBatch().getEntityResultList());
 
+		ListIterator<EntityResult> listIterator=results.listIterator(results.size());
+		List<EntityResult> newResults=new LinkedList<EntityResult>();
+		while(listIterator.hasPrevious()){
+			newResults.add(listIterator.previous());
+		}
+		
 		if (response.getBatch().getMoreResults() == QueryResultBatch.MoreResultsType.NOT_FINISHED) {
 			log.warn("WARNING: partial results\n");
 		}
 
-		return results;
+		return newResults;
 	}
 
 	public TareaDao findTaskByName(String nombre) throws DatastoreException {

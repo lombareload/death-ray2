@@ -139,6 +139,7 @@ public class DeathRay extends MVCPortlet {
 				}
 
 			} else if (action.equals("newTask")) {
+				keyName="";
 				page = "/html/deathray/crearModificarTarea.jsp";
 			} else if (action.equals("goBack")) {
 				page = "/html/deathray/view.jsp";

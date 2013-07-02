@@ -2,6 +2,7 @@
 form {
  	font-family: serif, Courier,Verdana,Arial, Verdana;
 	font-size:14px;
+	background-color: ##7B7C7F;
 }
 
 body{
@@ -20,18 +21,20 @@ body{
 }
 .aui-column-content {
 	padding: 10px 0px 10px 0px;
-/* 	border-left: 50px; */
  	margin-left: 100px;	 
-/* 	padding-left: 50px; */
-/* 	left: 50px; */
 }
 .aui-button-content{
 	padding: 15px 5px 15px 5px;	
 }
 
-input[type="button"], input[type="submit"]{
+input[type="button"], input[type="submit"], button{
 	font-family: Verdana;
 	font-size:16px;
+}
+
+button{
+	margin-top:15px;
+	margin-bottom:15px;
 }
 
 legend{

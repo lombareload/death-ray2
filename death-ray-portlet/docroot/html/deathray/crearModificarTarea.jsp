@@ -88,9 +88,9 @@
 								<span>Nombre tarea:</span>
 							</aui:column>
 							<aui:column columnWidth="70">
-								<span><%=keyName%> <input
-									type="<%=action!=null&&action.equals("newTask")?"text":"hidden"%>"
-									name="keyName" value="<%=keyName%>" /> </span>
+								<span><%=(action!=null&&action.equals("newTask"))?"":keyName%> <input
+									type="<%=(action!=null&&action.equals("newTask"))?"text":"hidden"%>"
+									name="keyName" value="" /> </span>
 							</aui:column>
 						</aui:layout>
 
