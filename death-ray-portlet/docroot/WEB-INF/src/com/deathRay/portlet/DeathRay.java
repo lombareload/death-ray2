@@ -126,6 +126,7 @@ public class DeathRay extends MVCPortlet {
 							Long userId = Long.valueOf(user_Id);
 							String estadoId = request.getParameter("estadoId");
 							Long estado = Long.valueOf(estadoId);
+							log.info("estado: "+estado);
 							tarea.createOrUpdateTarea(fecha_inicial,
 									fecha_final, estado, userId, group_id,
 									keyName, descripcion);

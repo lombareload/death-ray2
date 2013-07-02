@@ -88,9 +88,10 @@
 								<span>Nombre tarea:</span>
 							</aui:column>
 							<aui:column columnWidth="70">
-								<span><%=(action!=null&&action.equals("newTask"))?"":keyName%> <input
+								<span><%=(action!=null&&action.equals("newTask"))?"":keyName%>
+									<input id="keyName" name="keyName"
 									type="<%=(action!=null&&action.equals("newTask"))?"text":"hidden"%>"
-									name="keyName" value="" /> </span>
+									value="<%=keyName%>" /> </span>
 							</aui:column>
 						</aui:layout>
 
@@ -248,7 +249,8 @@
 		</div>
 		<div class="<%=action==null?"aui-helper-hidden":""%>">
 			<aui:button-row>
-				<aui:button name="saveButton" type="submit" value="save" />
+				<aui:button name="saveButton" type="button" value="save"
+					onClick="saveTask()" />
 
 				<aui:button name="cancelButton" type="button" value="cancel"
 					onClick="cancelFunction()" />
@@ -265,6 +267,19 @@
 			function cancelFunction() {
 				document.editorTareaForm.action.value = "cancelSaveTask";
 				document.editorTareaForm.submit();
+			}
+			function saveTask() {
+				if (
+		<%=(action!=null&&action.equals("newTask")) %>
+			) {
+					if ($('#keyName').val() != '') {
+						document.editorTareaForm.submit();
+					} else {
+						alert("Debe ingresar un nombre a la tarea");
+					}
+				} else {
+					document.editorTareaForm.submit();
+				}
 			}
 
 			$(document).ready(function() {
