@@ -11,6 +11,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.deathRay.cloud.Tarea;
 import com.deathRay.dao.TareaDao;
 import com.deathRay.util.Util;
@@ -30,6 +32,8 @@ import java.util.Date;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -193,10 +197,12 @@ public class DeathRay extends MVCPortlet {
 		JSONObject jResponse = JSONFactoryUtil.createJSONObject();
 		String code = ParamUtil.getString(resourceRequest, "code");
 		
+		ThemeDisplay themeDisplay = (ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		User user = themeDisplay.getUser();
 		try{
 			log.debug("llamando metodo en  AuthorizationUtil");
 //			AuthorizationUtil.getInstance().getGoogleCredential(code);
-			File file = GoogleDocsUtil.getInstance().grantAccess(code);
+			File file = GoogleDocsUtil.getInstance().grantAccess(code, user);
 			log.debug("fin llamado metodo AuthorizationUtil");
 			jResponse.put("status", TransactionStatus.NO_ERRORS.ordinal());
 			jResponse.put("driveUrl", file.getAlternateLink());
